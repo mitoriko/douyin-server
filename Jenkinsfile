@@ -1,4 +1,3 @@
-  
 pipeline {
   agent any
   stages {
@@ -17,6 +16,7 @@ echo "$REAL_PATH"
 docker run --rm -v "$REAL_PATH":/app -v "$REAL_CACHE":/app/node_modules -w /app node:lts npm install
 docker run --rm -v "$REAL_PATH":/app -v "$REAL_CACHE":/root/.m2 -w /app maven:3-jdk-8 mvn clean install
 cd target
+cp ../Dockerfile . 
 docker build -t "$REGISTRY_URL"/"$REGISTRY_IMAGE" .
 docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$REGISTRY_URL" && docker push "$REGISTRY_URL"/"$REGISTRY_IMAGE"'''
       }
